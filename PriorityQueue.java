@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Rachel Riemersma / 001 
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,9 +150,13 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
-
-        // YOUR CODE GOES HERE
-        return null;
+        // Create new node
+        Node node = new Node(e, priority, tree.size());
+        // Add new node to bottom right-most position of heap
+        tree.add(node);
+        // move node up tree to correct position
+        pullUp(node.idx);
+        return node;
     }
 
 
@@ -167,8 +171,14 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        // Loop through every node in the heap
+        for (Node node : tree) {
+            // If the target value is found, return true
+            if (node.value.equals(e)) {
+                return true;
+            }
+        }
+        // Target value not found
         return false;
     }
 

@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *  Rachel Riemersma / 001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,12 +64,28 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
-
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
-  }
+        // Create a max heap
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        // Add all boulder weights into heap
+        for (int boulder : boulders) {
+            maxHeap.add(boulder);
+        }
+        // Continue game as longs as there is at least 2 boulders to smash
+        while (maxHeap.size() > 1) {
+            // Remove the largest boulder
+            int first = maxHeap.poll();
+            // Remove the second-largest boulder
+            int second = maxHeap.poll();
+            // If they are not the same weight, smash them
+            // If they are the same weight nothing is added
+            if (first != second) {
+                maxHeap.add(first - second);
+            }
+        }
+        // If there is no boulder left, return 0
+        // If there is one boulder left, return its weight
+        return maxHeap.isEmpty() ? 0 : maxHeap.peek();
+    }
 
 
     /**
@@ -90,11 +106,25 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        // Create hash map to store how many times each string appears in the list
+        HashMap<String, Integer> map = new HashMap<>();
+        // Loop through the input list and count each string
+        for (String s : input) {
+            // If the string is in the map, increment the count
+            // If it's not there yet, start with 0 and then add 1
+            map.put(s, map.getOrDefault(s, 0) + 1);
+        }
+        // Create list to store the strings that appeared more than once
+        ArrayList<String> duplicates = new ArrayList<>();
+        // Search the map for strings with a count greater than 1 and add to the list
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() > 1) {
+                duplicates.add(entry.getKey());
+            }
+        }
+        // Sort the result in ascending order
+        Collections.sort(duplicates);
+        return duplicates;  // Make sure result is sorted in ascending order
 
     }
 
@@ -130,10 +160,32 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        // Create a hash set for numbers already seen while iterating
+        HashSet<Integer> seen = new HashSet<>();
+        // Create a hash set to store unique string pairs
+        HashSet<String> unique = new HashSet<>();
+        // Create list for final result
+        ArrayList<String> result = new ArrayList<>();
+        // Loop through each number in the input array
+        for (int num : input) {
+            // find the complement
+            int complement = k - num;
+            // Check if the complement has already been seen
+            if (seen.contains(complement)) {
+                // Create a pair
+                int a = Math.min(num, complement);
+                int b = Math.max(num, complement);
+                String pair = "(" + a + ", " + b + ")";
+                // Add the pair to the set of unique results
+                unique.add(pair);
+            }
+            // Mark current number as seen
+            seen.add(num);
+        }
+        // Transfer unique pairs to the result
+        result.addAll(unique);
+        // Sort the result in ascending order
+        Collections.sort(result);
+        return result;  // Make sure returned lists is sorted as indicated above
     }
 }
